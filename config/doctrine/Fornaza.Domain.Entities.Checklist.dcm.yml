@@ -1,0 +1,41 @@
+Fornaza\Domain\Entities\Checklist:
+    type: entity
+    table: checklists
+    repositoryClass: Fornaza\Infra\Doctrine\Checklist
+    id:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+        completed:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+    oneToMany:
+        steps:
+            targetEntity: Fornaza\Domain\Entities\Step
+            cascade:
+                - remove
+                - persist
+            mappedBy: checklist
+            inversedBy: null
+            orphanRemoval: true
+            orderBy: null
+    lifecycleCallbacks: {  }

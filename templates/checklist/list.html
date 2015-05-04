@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="list-group">
+    {% for checklist in checklists %}
+    <a href="{{ app.request.baseUrl }}/checklists/{{ checklist.getId() }}/detail" class="list-group-item">
+        {{ checklist.getName() }}
+        {% if checklist.isCompleted() %}
+        <span class="label label-success pull-right">Completed</span>
+        {% else %}
+        <span class="label label-danger pull-right">Incomplete</span>
+        {% endif %}
+    </a>
+    {% endfor %}
+</div>
+{% endblock content %}
