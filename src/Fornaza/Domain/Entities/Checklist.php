@@ -3,20 +3,17 @@
 namespace Fornaza\Domain\Entities;
 
 use DomainException;
-use InvalidArgumentException;
 
 class Checklist
 {
     private $id;
     private $name;
     private $steps;
-    private $completed;
 
-    public function __construct($name)
+    public function __construct($name, $steps)
     {
         $this->setName($name);
-        $this->steps = array();
-        $this->completed = false;
+        $this->setSteps($steps);
     }
 
     public function getId()
@@ -32,6 +29,21 @@ class Checklist
     public function getName()
     {
         return $this->name;
+    }
+
+    private function setSteps(array $steps)
+    {
+        $steps = array_filter($steps, function($step) {
+            return $step != '';
+        });
+
+        if (empty($steps)) {
+            throw new DomainException('A checklist must have steps.');
+        }
+
+        foreach ($steps as $step) {
+            $this->addStep($step);
+        }
     }
 
     public function addStep($stepDescription)
@@ -50,17 +62,22 @@ class Checklist
     public function complete()
     {
         foreach ($this->steps as $step) {
-            if ( ! $step->isCompleted()) {
-                throw new DomainException('The checklist cannot be completed until all the steps is done.');
-            }
+            $step->complete();
         }
-
-        $this->completed = true;
     }
 
     public function isCompleted()
     {
-        return $this->completed;
+        $completed = true;
+
+        foreach ($this->steps as $step) {
+            if ( ! $step->isCompleted()) {
+                $completed = false;
+                break;
+            }
+        }
+
+        return $completed;
     }
 
     public function getCompletionRate()

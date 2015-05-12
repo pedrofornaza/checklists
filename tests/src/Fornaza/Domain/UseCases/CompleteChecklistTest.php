@@ -21,37 +21,14 @@ class CompleteChecklistTest extends \PHPUnit_Framework_TestCase
         return $repository;
     }
 
-    public function test_complete_checklist_without_steps()
+    public function test_complete_valid_checklist()
     {
-        $checklist = new Checklist('Test Checklist');
-        $repository = $this->getRepositoryMock($checklist);
+        $checklist = $this->getMockBuilder('Fornaza\Domain\Entities\Checklist')
+                          ->disableOriginalConstructor()
+                          ->getMock();
 
-        $useCase = new CompleteChecklist($repository);
-
-        $command = new CompleteChecklistCommand(1);
-        $useCase->execute($command);
-    }
-
-    public function test_complete_checklist_with_completed_step()
-    {
-        $checklist = new Checklist('Test Checklist');
-        $step = $checklist->addStep('Test Step');
-        $step->complete();
-
-        $repository = $this->getRepositoryMock($checklist);
-
-        $useCase = new CompleteChecklist($repository);
-
-        $command = new CompleteChecklistCommand(1);
-        $useCase->execute($command);
-    }
-
-    public function test_complete_checklist_with_not_completed_step()
-    {
-        $this->setExpectedException('DomainException');
-
-        $checklist = new Checklist('Test Checklist');
-        $step = $checklist->addStep('Test Step');
+        $checklist->expects($this->once())
+                  ->method('complete');
 
         $repository = $this->getRepositoryMock($checklist);
 

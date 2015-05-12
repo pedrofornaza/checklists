@@ -16,11 +16,7 @@ class CreateChecklist
 
     public function execute(CreateChecklistCommand $command)
     {
-        $checklist = new Checklist($command->checklistName);
-
-        foreach ($command->stepsDescription as $stepDescription) {
-            $checklist->addStep($stepDescription);
-        }
+        $checklist = new Checklist($command->checklistName, $command->stepsDescription);
 
         $this->repository->save($checklist);
     }
