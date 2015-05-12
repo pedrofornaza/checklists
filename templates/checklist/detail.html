@@ -31,9 +31,11 @@
             {% endfor %}
         </div>
 
+        {% if not checklist.isCompleted() %}
         <div class="form-group no-margin">
             <button type="submit" class="btn btn-success pull-right" href="#" role="button">Complete Checklist</button>
         </div>
+        {% endif %}
     </form>
 </div>
 {% endblock content %}
