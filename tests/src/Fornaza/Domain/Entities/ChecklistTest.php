@@ -81,4 +81,13 @@ class ChecklistTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(50, $checklist->getCompletionRate());
     }
+
+    public function test_checklist_can_be_archived()
+    {
+        $checklist = $this->getChecklistInstance();
+
+        $checklist->archive();
+
+        $this->assertTrue($checklist->isArchived());
+    }
 }

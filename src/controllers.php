@@ -9,13 +9,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 //Request::setTrustedProxies(array('127.0.0.1'));
 
 $app->get('/', 'checklist.controller:listAction')->bind('checklists.list');
+$app->get('/archive', 'checklist.controller:listArchiveAction')->bind('checklists.list.archive');
 
 $app->get('/checklists/form', 'checklist.controller:formAction')->bind('checklists.form');
 $app->post('/checklists/create', 'checklist.controller:createAction')->bind('checklists.create');
 
-$app->get('/checklists/{id}/detail', 'checklist.controller:detailAction')->bind('checklists.detail');
-
 $app->post('/checklists/{id}/complete', 'checklist.controller:completeAction')->bind('checklists.complete');
+
+$app->post('/checklists/{id}/archive', 'checklist.controller:archiveAction')->bind('checklists.archive');
 
 $app->post('/steps/{id}/complete', 'step.controller:completeAction')->bind('steps.complete');
 

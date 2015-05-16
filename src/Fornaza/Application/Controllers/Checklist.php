@@ -3,9 +3,11 @@
 namespace Fornaza\Application\Controllers;
 
 use Exception;
+use Fornaza\Domain\Commands\ArchiveChecklist as ArchiveChecklistCommand;
 use Fornaza\Domain\Commands\CompleteChecklist as CompleteChecklistCommand;
 use Fornaza\Domain\Commands\CreateChecklist as CreateChecklistCommand;
 use Fornaza\Domain\Repositories\Checklist as ChecklistRepository;
+use Fornaza\Domain\UseCases\ArchiveChecklist as ArchiveChecklistUseCase;
 use Fornaza\Domain\UseCases\CompleteChecklist as CompleteChecklistUseCase;
 use Fornaza\Domain\UseCases\CreateChecklist as CreateChecklistUseCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +28,13 @@ class Checklist
     public function listAction()
     {
         $checklists = $this->repository->findAll();
+
+        return $this->twig->resolveTemplate('checklist/list.html')->render(array('checklists' => $checklists));
+    }
+
+    public function listArchiveAction()
+    {
+        $checklists = $this->repository->findAllArchived();
 
         return $this->twig->resolveTemplate('checklist/list.html')->render(array('checklists' => $checklists));
     }
@@ -52,17 +61,6 @@ class Checklist
         return $this->container->redirect($this->container['url_generator']->generate('checklists.list'));
     }
 
-    public function detailAction($id)
-    {
-        $checklist = $this->repository->find($id);
-        if ( ! $checklist) {
-            $this->container['session']->getFlashBag()->add('error', 'The requested checklist does not exist.');
-            return $this->container->redirect($this->container['url_generator']->generate('checklists.list'));
-        }
-
-        return $this->twig->resolveTemplate('checklist/detail.html')->render(array('checklist' => $checklist));
-    }
-
     public function completeAction($id)
     {
         try {
@@ -76,5 +74,20 @@ class Checklist
         }
 
         return $this->container->redirect($this->container['url_generator']->generate('checklists.detail', array('id' => $id)));
+    }
+
+    public function archiveAction($id)
+    {
+        try {
+            $command = new ArchiveChecklistCommand($id);
+
+            $useCase = new ArchiveChecklistUseCase($this->repository);
+            $useCase->execute($command);
+
+        } catch (Exception $e) {
+            $this->container['session']->getFlashBag()->add('error', $e->getMessage());
+        }
+
+        return $this->container->redirect($this->container['url_generator']->generate('checklists.list'));
     }
 }

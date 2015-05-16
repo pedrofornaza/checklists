@@ -8,6 +8,10 @@
     {% else %}
     <p class="label label-danger">Incomplete</p>
     {% endif %}
+
+    {% if checklist.isArchived() %}
+    <p class="label label-primary">Archived</p>
+    {% endif %}
 </div>
 
 <div class="progress">

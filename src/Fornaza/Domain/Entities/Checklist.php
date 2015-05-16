@@ -9,11 +9,13 @@ class Checklist
     private $id;
     private $name;
     private $steps;
+    private $archived;
 
     public function __construct($name, $steps)
     {
         $this->setName($name);
         $this->setSteps($steps);
+        $this->archived = false;
     }
 
     public function getId()
@@ -96,5 +98,15 @@ class Checklist
         }
 
         return $rate;
+    }
+
+    public function archive()
+    {
+        $this->archived = true;
+    }
+
+    public function isArchived()
+    {
+        return $this->archived;
     }
 }

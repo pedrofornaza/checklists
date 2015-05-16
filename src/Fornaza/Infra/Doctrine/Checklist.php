@@ -13,4 +13,14 @@ class Checklist extends DoctrineRepository implements ChecklistRepository
         $this->_em->persist($entity);
         $this->_em->flush();
     }
+
+    public function findAll()
+    {
+        return $this->findBy(['archived' => false]);
+    }
+
+    public function findAllArchived()
+    {
+        return $this->findBy(['archived' => true]);
+    }
 }

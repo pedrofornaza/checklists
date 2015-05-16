@@ -6,9 +6,13 @@
     <a href="{{ app.request.baseUrl }}/checklists/{{ checklist.getId() }}/detail" class="list-group-item">
         {{ checklist.getName() }}
         {% if checklist.isCompleted() %}
-        <span class="label label-success pull-right">Completed</span>
+        <span class="label label-success pull-right label-margin">Completed</span>
         {% else %}
-        <span class="label label-danger pull-right">Incomplete</span>
+        <span class="label label-danger pull-right label-margin">Incomplete</span>
+        {% endif %}
+
+        {% if checklist.isArchived() %}
+        <span class="label label-primary pull-right label-margin">Archived</span>
         {% endif %}
     </a>
     {% endfor %}
