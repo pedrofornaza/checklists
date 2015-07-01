@@ -3,40 +3,45 @@
 <head>
     <title>Fornaza Checklists</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <nav>
-                <ul class="nav nav-pills pull-right">
-                    <li role="presentation"><a href="{{ app.request.baseUrl }}/">Home</a></li>
-                    <li role="presentation"><a href="{{ app.request.baseUrl }}/checklists/form">New Checklist</a></li>
-                </ul>
+        <div class="row">
+            <nav class="brown darken-1">
+                <div class="nav-wrapper">
+                    <div class="col s12">
+                        <a href="{{ app.request.baseUrl }}/" class="brand-logo">Checklists</a>
+                        <ul id="nav-mobile" class="right hide-on-med-and-down">
+                            <li><a href="{{ app.request.baseUrl }}/">Home</a></li>
+                            <li><a href="{{ app.request.baseUrl }}/archive">Archive</a></li>
+                            <li><a href="{{ app.request.baseUrl }}/checklists/form">New Checklist</a></li>
+                        </ul>
+                    </div>
+                </div>
             </nav>
-            <h3 class="text-muted">Checklists</h3>
+
+            {% set errors = app.session.getFlashBag.get('error') %}
+            {% if errors is not empty %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+
+            <footer class="footer">
+                <p>&copy; Pedro Fornaza - 2015</p>
+            </footer>
+
         </div>
-
-        {% set errors = app.session.getFlashBag.get('error') %}
-        {% if errors is not empty %}
-        <div class="alert alert-danger" role="alert">
-            {% for error in errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        {% block content %}{% endblock %}
-
-        <footer class="footer">
-            <p>&copy; Pedro Fornaza - 2015</p>
-        </footer>
-
     </div> <!-- /container -->
 
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

@@ -1,20 +1,77 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="list-group">
-    {% for checklist in checklists %}
-    <a href="{{ app.request.baseUrl }}/checklists/{{ checklist.getId() }}/detail" class="list-group-item">
-        {{ checklist.getName() }}
-        {% if checklist.isCompleted() %}
-        <span class="label label-success pull-right label-margin">Completed</span>
-        {% else %}
-        <span class="label label-danger pull-right label-margin">Incomplete</span>
-        {% endif %}
 
-        {% if checklist.isArchived() %}
-        <span class="label label-primary pull-right label-margin">Archived</span>
-        {% endif %}
-    </a>
-    {% endfor %}
+{% set half = checklists|length / 2 %}
+{% set half = half|round(0, 'ceil') %}
+
+<div class="row">
+<div class="col s12 m6">
+{% for key, checklist in checklists %}
+    <div class="col s12 m12 no-padding">
+        <div class="card grey lighten-4">
+            <div class="card-content">
+                <span class="card-title black-text">
+                    {{ checklist.getName() }}
+                </span>
+
+
+                <div class="progress brown lighten-3">
+                    <div class="determinate brown darken-1" style="width: {{ checklist.getCompletionRate() }}%"></div>
+                </div>
+
+                <div class="collection">
+                    {% for step in checklist.getSteps() %}
+                    <a href="{{ app.request.baseUrl }}/steps/{{ step.getId() }}/complete" class="collection-item grey-text text-darken-2" id="action-complete-step">
+                        {% if step.isCompleted() %}
+                            <i class="tiny mdi-action-done green-text text-darken-3"></i>
+
+                        {% else %}
+                            <i class="tiny mdi-content-clear red-text text-darken-3"></i>
+                        {% endif %}
+
+                        {{ step.getDescription() }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="card-action">
+                {% if not checklist.isCompleted() %}
+                <a href="{{ app.request.baseUrl }}/checklists/{{ checklist.getId() }}/complete" class="btn white green-text text-darken-3" id="action-complete-checklist">Complete</a>
+                {% endif %}
+
+                {% if not checklist.isArchived() %}
+                <a href="{{ app.request.baseUrl }}/checklists/{{ checklist.getId() }}/archive" class="btn white brown-text" id="action-archive-checklist">Archive</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if (key + 1) == half %}
+    </div>
+    <div class="col s12 m6">
+    {% endif %}
+{% endfor %}
+</div>
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $(document).on('click', 'a[id^="action-"]', function(event) {
+        event.preventDefault();
+
+        var element = event.target,
+            url = $(element).attr('href');
+
+        $.post(url, {}, function() {
+            window.location.reload();
+        });
+
+        return false;
+    });
+});
+</script>
+{% endblock scripts %}
