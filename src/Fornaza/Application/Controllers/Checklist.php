@@ -11,6 +11,7 @@ use Fornaza\Domain\UseCases\ArchiveChecklist as ArchiveChecklistUseCase;
 use Fornaza\Domain\UseCases\CompleteChecklist as CompleteChecklistUseCase;
 use Fornaza\Domain\UseCases\CreateChecklist as CreateChecklistUseCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Checklist
 {
@@ -73,7 +74,7 @@ class Checklist
             $this->container['session']->getFlashBag()->add('error', $e->getMessage());
         }
 
-        return $this->container->redirect($this->container['url_generator']->generate('checklists.detail', array('id' => $id)));
+        return new Response();
     }
 
     public function archiveAction($id)
@@ -88,6 +89,6 @@ class Checklist
             $this->container['session']->getFlashBag()->add('error', $e->getMessage());
         }
 
-        return $this->container->redirect($this->container['url_generator']->generate('checklists.list'));
+        return new Response();
     }
 }
