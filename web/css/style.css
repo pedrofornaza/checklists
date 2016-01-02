@@ -26,6 +26,6 @@ nav {
 }
 
 input[type="text"]:focus {
-    border-bottom: 1px solid #6D4C41 !important;
-    box-shadow: 0px 1px 0px 0px #6D4C41 !important;
+    border-bottom: 1px solid #26a69a !important;
+    box-shadow: 0px 1px 0px 0px #26a69a !important;
 }

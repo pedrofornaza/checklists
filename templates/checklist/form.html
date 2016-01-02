@@ -6,16 +6,16 @@
         <div class="row">
             <div class="input-field col s12">
                 <input id="checklist-name" type="text" name="checklist[name]" class="validate">
-                <label for="checklist-name" class="brown-text">Name</label>
+                <label for="checklist-name" class="teal-text">Name</label>
             </div>
 
             <div class="input-field col s12 step-input">
                 <input id="checklist-step" type="text" name="checklist[steps][]" class="validate" placeholder="Step description (enter to create a new step)">
-                <label for="checklist-step" class="brown-text">Step Description</label>
+                <label for="checklist-step" class="teal-text">Step Description</label>
             </div>
 
             <div class="input-field col s12">
-                <button type="submit" class="btn right brown">Create</button>
+                <button type="submit" class="btn right teal">Create</button>
             </div>
         </div>
     </form>
@@ -24,7 +24,7 @@
 
 {% block scripts %}
 <script type="text/template" id="step-input-template">
-<div class="input-field col s12 step-input brown-text">
+<div class="input-field col s12 step-input teal-text">
     <input id="checklist-step" type="text" name="checklist[steps][]" class="validate" placeholder="Step description (enter to create a new step)">
     <label for="checklist-step">Step Description</label>
 </div>
